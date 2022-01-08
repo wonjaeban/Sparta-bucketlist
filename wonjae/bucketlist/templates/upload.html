@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>업로드하기</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        * {
+            font-family: 'Lora', serif;
+        }
+
+        .login_head {
+            color: black;
+            font-size: xx-large;
+            padding-top: 20px;
+            width: 200px;
+            margin: auto;
+        }
+
+        .describe {
+            width: 350px;
+            height: 400px;
+        }
+
+        .input-group {
+            width: 500px;
+            margin: auto;
+
+        }
+
+        .enrollment {
+            width: 80px;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .form-select {
+            width: 410px;
+            border-radius: 5px;
+            border-color: lightgray;
+        }
+        .inputs {
+            color: red;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+
+
+
+        A:link {text-decoration: none; color: black;}
+        A:visited {text-decoration: none; color: black;}
+        A:active {text-decoration: none; color: black;}
+        A:hover {text-decoration: none; color: black;}
+
+
+    </style>
+    <script>
+        function make_bucketlist() {
+            let title = $('#title').val()
+            let description = $('#description').val()
+            let image = $('#image').val()
+            let category = $('#category').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/api/enrollment",
+                data: {title_give: title, description_give: description, image_give: image, category_give: category},
+                success: function (response) {
+                    alert(response['msg'])
+                }
+            })
+
+        }
+
+        function title_warning() {
+            $("#count_title").hide();
+            let title_length = $('#title').val().length
+            if (title_length == 0) {
+                $("#count_title").show();
+            }
+        }
+
+        function image_warning() {
+            $("#count_image").hide();
+            $("#already_image").hide();
+            let image_length = $('#image').val().length
+            let image = $('#image').val()
+            if (image_length == 0) {
+                $("#count_image").show();
+            }
+            else {
+                $.ajax({
+                type: "POST",
+                url: "/api/upload_check",
+                data: {image_give: image},
+                success: function (response) {
+                    if (response['result'] == false) {
+                        $("#already_image").show();
+                    }
+                }
+                })
+            }
+        }
+
+        function category_warning() {
+            $("#count_category").hide();
+            if ($('#category').val() == "Choose...") {
+                $("#count_category").show();
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="login_head">
+        <a href="/login_index"><h1>bucketlist</h1></a>
+    </div>
+
+    <hr>
+    <div class="input-group">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="">제목</span>
+            </div>
+            <input onblur="title_warning()" type="text" id="title" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="inputs" id="count_title">필수정보입니다.</div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">설명</span>
+            </div>
+            <input type="text" id="description" class="form-control describe" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+         <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" >이미지 경로</span>
+            </div>
+            <input onblur="image_warning()" type="text" id="image" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="inputs" id="count_image">필수정보입니다.</div>
+        <div class="inputs" id="already_image">이미 존재하는 경로입니다.</div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="category">카테고리</label>
+            <select class="form-select" id="category" onblur="category_warning()">
+                <option selected>Choose...</option>
+                <option>스포츠</option>
+                <option>여행</option>
+                <option>공부</option>
+            </select>
+        </div>
+        <div class="inputs" id="count_category">필수정보입니다.</div>
+    </div>
+    <div class="enrollment">
+        <button type="button" onclick="make_bucketlist()"><a href="/login_index">등록하기</a></button>
+    </div>
+</body>
+</html>

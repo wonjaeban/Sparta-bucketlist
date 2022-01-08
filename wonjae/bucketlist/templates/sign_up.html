@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        * {
+            font-family: 'Lora', serif;
+        }
+
+        .login_head {
+            color: black;
+            font-size: xx-large;
+            padding-top: 20px;
+            width: 190px;
+            margin: auto;
+        }
+
+        .blanks {
+            padding-top: 20px;
+        }
+
+        .blanks_wrap {
+            width: 320px;
+            margin: auto;
+        }
+
+        .input_size {
+            width: 300px;
+            height: 30px;
+            border-radius: 5px;
+        }
+
+        .join_button {
+            background-color: darkgrey;
+            margin-top: 20px;
+            width: 310px;
+            height: 50px;
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .inputs {
+            color: red;
+            display: none;
+        }
+
+        A:link {text-decoration: none; color: black;}
+        A:visited {text-decoration: none; color: black;}
+        A:active {text-decoration: none; color: black;}
+        A:hover {text-decoration: none; color: black;}
+
+
+    </style>
+
+    <script>
+        function sign_up() {
+            let id = $('#id').val()
+            let pw = $('#pw').val()
+            let final_pw = $('#final_pw').val()
+            let nickname = $('#nickname').val()
+
+            if ($("#count_id").css("display") == "block" || $("#already").css("display") == "block" ||
+            $("#count_pw").css("display") == "block" || $("#check_pw").css("display") == "block" ||
+            $("#check_pw2").css("display") == "block" || $("#name").css("display") == "block" &&
+                id == "" || pw == "" || final_pw == "" || nickname == "") {
+                alert("정보를 제대로 입력해주세요!")
+            }
+            else {
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/member",
+                    data: {id_give: id, pw_give: pw, nickname_give: nickname},
+                    success: function (response) {
+                        alert(response["msg"]);
+                        window.location.href="/"
+                    }
+                })
+
+            }
+
+
+        }
+
+        function id_warning() {
+            $("#count_id").hide();
+            $("#already").hide();
+            let id = $("#id").val()
+            let id_length = $("#id").val().length
+
+            if (id_length < 4) {
+                $("#count_id").show();
+            }
+            else {
+                $.ajax({
+                type: "POST",
+                url: "/api/sign_up_check",
+                data: {id_give: id},
+                success: function (response) {
+                    if (response['result'] == false) {
+                        $("#already").show();
+                    }
+                }
+                })
+            }
+        }
+
+        function pw_warning() {
+            $("#count_pw").hide();
+            let pw_length = $("#pw").val().length
+
+            if (pw_length < 4) {
+                $("#count_pw").show();
+            }
+        }
+
+        function final_warning() {
+            $("#check_pw").hide();
+            $("#check_pw2").hide();
+            let final_pw = $("#final_pw").val()
+
+            if (final_pw == "") {
+                $("#check_pw2").show();
+            }
+
+            if (final_pw != "" && final_pw != $("#pw").val()) {
+                $("#check_pw").show();
+            }
+        }
+
+        function name_warning() {
+            $("#name").hide();
+
+            let nickname = $("#nickname").val()
+
+            if (nickname == "") {
+                $("#name").show();
+            }
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <div class="login_head">
+        <a href="/"><h1>bucketlist</h1></a>
+    </div>
+    <div class="blanks_wrap">
+        <div class="blanks">
+            <label for="id">아이디</label>
+            <div>
+                <input id="id" type="email" class="input_size" aria-describedby="emailHelp"
+                       placeholder="4글자 이상(필수정보)" onblur="id_warning()">
+                <div class="inputs" id="count_id">4글자 이상 입력하세요.</div>
+                <div class="inputs" id="already">이미 존재합니다.</div>
+            </div>
+        </div>
+        <div class="blanks">
+            <label for="pw">비밀번호</label>
+            <div>
+                <input id="pw" type="password" class="input_size"  aria-describedby="emailHelp"
+                       placeholder="4글자 이상(필수정보)" onblur="pw_warning()">
+                <div class="inputs" id="count_pw">4글자 이상 입력하세요.</div>
+            </div>
+        </div>
+        <div class="blanks">
+            <label for="final_pw">비밀번호 재확인</label>
+            <div>
+                <input id="final_pw" type="password" class="input_size"  aria-describedby="emailHelp"
+                       placeholder="(필수정보)" onblur="final_warning()">
+                <div class="inputs" id="check_pw">위 비밀번호와 다릅니다.</div>
+                <div class="inputs" id="check_pw2">필수 정보입니다.</div>
+            </div>
+        </div>
+        <div class="blanks">
+            <label for="nickname">이름</label>
+            <div>
+                <input type="text" class="input_size" id="nickname" aria-describedby="emailHelp"
+                       placeholder="(필수정보)" onblur="name_warning()">
+                <div class="inputs" id="name">필수 정보입니다.</div>
+            </div>
+        </div>
+        <button type="button" class="join_button" onclick="sign_up()"><a>가입하기</a></button>
+    </div>
+
+
+</body>
+</html>

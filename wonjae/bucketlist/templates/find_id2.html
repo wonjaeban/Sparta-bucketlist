@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        * {
+            font-family: 'Lora', serif;
+        }
+
+        .login_head {
+            color: black;
+            font-size: xx-large;
+            padding-top: 20px;
+            width: 200px;
+            margin: auto;
+        }
+        .order {
+            font-size: small;
+            margin-left: 310px;
+        }
+        .login {
+            padding: 50px 50px 50px 50px;
+            width: 600px;
+            margin: auto;
+            margin-top: 20px;
+            border-radius: 5px;
+            border-style: solid;
+
+        }
+        .login_button {
+            margin: auto;
+            margin-top: 10px;
+            display: block;
+            border-radius: 5px;
+        }
+        .finding_id_link {
+            font-size: 5px;
+        }
+        .describe {
+            width: 600px;
+            font-size: 20px;
+            padding-top: 10px;
+            margin: auto;
+        }
+        .margin_top {
+            margin-top: 20px;
+        }
+        .present_order {
+            color: green;
+        }
+
+
+
+        A:link {text-decoration: none; color: black;}
+        A:visited {text-decoration: none; color: black;}
+        A:active {text-decoration: none; color: black;}
+        A:hover {text-decoration: none; color: black;}
+
+    </style>
+    <script>
+        $(document).ready(function () {
+                list();
+            });
+
+        function list(){
+            let temp = location.href.split("?")
+            let name_input = temp[1].split('=')[1]
+            let decode_name = decodeURI(name_input)
+            $.ajax({
+                type: "POST",
+                url: "/api/check_id",
+                data: {name_give: decode_name},
+                success: function (response) {
+                    let lists = response['lists']
+                    for (let i = 0; i < lists.length; i++){
+                            let id = lists[i]['id1']
+
+
+                            let temp_html = `<li class="list-group-item">${id}</li>`
+                            $('#lists').append(temp_html)
+                        }
+
+
+                }
+            })
+
+        }
+    </script>
+</head>
+<body>
+    <div class="login_head">
+        <a href="/"><h1>bucketlist</h1></a>
+    </div>
+    <div>
+        <h3 class="describe">아이디 찾기<span class="order"> 01. 이름 입력 > <span class="present_order">02. 아이디 공개</span></span></h3>
+    </div>
+    <hr>
+    <h5 class="describe">아이디를 기억해주세요.</h5>
+    <div class="login">
+        <ul class="list-group" id="lists">
+        </ul>
+    </div>
+    <button type="button" class="login_button"><a href="/">홈으로</a></button>
+    <h5 class="describe margin_top">비밀번호가 기억나지 않는다면? <a href="/find_password" class="finding_id_link" style="text-decoration: underline">비밀번호 찾기 바로가기<em class="ico_arr2"></em></a></h5>
+
+
+</body>
+</html>

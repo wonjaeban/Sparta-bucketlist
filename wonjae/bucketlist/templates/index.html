@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+
+        <title>bucketlist</title>
+
+        <style>
+            * {
+                font-family: 'Lora', serif;
+            }
+
+            .login_head {
+                font-size: 40px;
+                width: 200px;
+                margin: auto;
+            }
+
+            .login_button {
+
+            }
+            /* ul li태그에 리스트 스타일을 없앰 */
+            ul li {
+                list-style: none;
+            }
+
+            /* a태그에 텍스트 밑줄을 없애고 색상을 #333 */
+            a {
+                text-decoration: none;
+                color: #333;
+            }
+
+            /* 글자크기를 16px 맑은 고딕 굵게하고 width넓이 700, 높이 50만큼 배경색은 #ccc, 글자색은 검정색, 라인높이50px
+            menu박스 가운데정렬, 글자가운데 정렬 */
+            #menu {
+                font: bold 16px "malgun gothic";
+                width: 450px;
+                height: 50px;
+                background: #ccc;
+                color: black;
+                line-height: 50px;
+                margin: auto;
+                margin-left: 400px;
+                text-align: center;
+            }
+
+            /* menu태그 자식의 ul의 자식 li를 왼쪽정렬과 넓이 140설정 */
+            #menu > ul > li {
+                float: left;
+                width: 140px;
+                position: relative;
+            }
+
+            #menu > ul > li > ul {
+                width: 130px;
+                display: none;
+                position: absolute;
+                font-size: 14px;
+                background: darkgray;
+            }
+
+            #menu > ul > li:hover > ul {
+                display: block;
+                z-index: 1;
+            }
+            .options {
+                margin-left: 1100px;
+
+            }
+            .popular {
+                background-color: #cccccc;
+                height: 50px;
+                font-weight: bold;
+                line-height: 10px;
+                border: #cccccc;
+                margin-left: 180px;
+            }
+            .card-img-top {
+                width: 200px;
+                height: 200px;
+                object-fit: fill;
+            }
+            .card {
+                padding-left: 40px;
+            }
+
+            .icon {
+                padding-left: 100px;
+
+            }
+
+            .card-body {
+                margin-left: 15px;
+            }
+
+
+            A:link {text-decoration: none; color: black;}
+            A:visited {text-decoration: none; color: black;}
+            A:active {text-decoration: none; color: black;}
+            A:hover {text-decoration: none; color: black;}
+        </style>
+        <script>
+            $(document).ready(function () {
+                showlist();
+            });
+
+            function reload() {
+                window.location.reload();
+            }
+
+            function showlist() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/list',
+                    data: {},
+                    success: function (response) {
+                        let lists = response['lists'];
+                        for (let i = 0; i < lists.length; i++){
+                            let title = lists[i]['title']
+                            let image = lists[i]['image']
+                            let like = lists[i]['like']
+
+
+                            let temp_html = `<div style="border: 1px lightgray; float: left;">
+                                                <div class="card" style="width: 18rem; margin: auto">
+                                                    <img class="card-img-top" src="${image}" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${title}</h5>
+                                                        <h5>좋아요: ${like}개</h5>
+                                                    </div>
+                                                    <a class="icon"><i style="color: blue" class="fas fa-heart" onclick="request_login()"></i></a>
+                                                </div>
+                                            </div>`
+                            $('#card').prepend(temp_html)
+                        }
+                    }
+                });
+            }
+            function request_login() {
+                alert("로그인이 필요합니다!")
+            }
+
+            function category(category) {
+                $('#card').empty()
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/category',
+                    data: {category_give:category},
+                    success: function (response) {
+                        let lists = response['lists'];
+                        for (let i = 0; i < lists.length; i++){
+                            let title = lists[i]['title']
+                            let image = lists[i]['image']
+                            let like = lists[i]['like']
+
+
+                            let temp_html = `<div style="border: 1px lightgray; float: left;">
+                                                <div class="card" style="width: 18rem; margin: auto">
+                                                    <img class="card-img-top" src="${image}" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${title}</h5>
+                                                        <h5>좋아요: ${like}개</h5>
+                                                    </div>
+                                                    <a class="icon"><i style="color: blue" class="fas fa-heart" onclick="request_login()"></i></a>
+                                                </div>
+                                            </div>`
+                            $('#card').prepend(temp_html)
+                        }
+                    }
+                });
+            }
+
+            function like() {
+                $('#card').empty()
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/like',
+                    data: {},
+                    success: function (response) {
+                        let lists = response['lists'];
+                        for (let i = 0; i < lists.length; i++){
+                            let title = lists[i]['title']
+                            let image = lists[i]['image']
+                            let like = lists[i]['like']
+
+
+                            let temp_html = `<div style="border: 1px lightgray; float: left;">
+                                                <div class="card" style="width: 18rem; margin: auto">
+                                                    <img class="card-img-top" src="${image}" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${title}</h5>
+                                                        <h5>좋아요: ${like}개</h5>
+                                                    </div>
+                                                    <a class="icon"><i style="color: blue" class="fas fa-heart" onclick="request_login()"></i></a>
+                                                </div>
+                                            </div>`
+                            $('#card').append(temp_html)
+                        }
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="login_head">
+            <a><h1 onclick="reload()">bucketlist</h1></a>
+        </div>
+        <div class="options">
+            <button type="button" class="login_button"><a href="/login">로그인</a></button>
+            <button type="button" class="login_button"><a href="/sign_up">회원가입</a></button>
+        </div>
+        <hr>
+        <div id="menu">
+            <ul>
+                <li><a>카테고리</a>
+                    <ul>
+                        <li><a onclick="category('스포츠')">스포츠</a></li>
+                        <li><a onclick="category('여행')">여행</a></li>
+                        <li><a onclick="category('공부')">공부</a></li>
+                    </ul>
+                </li>
+                <button type="button" class="popular" onclick="like()"><a>인기순</a></button>
+            </ul>
+        </div>
+        <hr>
+        <div id="card">
+
+        </div>
+    </body>
+</html>
