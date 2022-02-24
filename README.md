@@ -5,28 +5,49 @@
 ### Main Page
 ![image](https://user-images.githubusercontent.com/70055619/155463483-48ae4255-c9db-4b72-8f78-8c1a3270cf8d.png)
 
+
+
 ### Main Page (카테고리별 분류)
 ![image](https://user-images.githubusercontent.com/70055619/155464396-4ee8defa-5577-41fa-9f7c-52e11dacb991.png)
+
+
 
 ### Main Page (좋아요순 정렬)
 ![image](https://user-images.githubusercontent.com/70055619/155464505-0a136663-50ee-48ea-a0ac-b1641643a9d8.png)
 
+
+
 ### SignUp page
 ![image](https://user-images.githubusercontent.com/70055619/155464791-f93793ca-3b32-4ecc-af2b-dcdfe3d850e8.png)
 
+
+
 ### Login page
 ![image](https://user-images.githubusercontent.com/70055619/155465135-07c36387-2377-4e20-beb4-705f8e6a835b.png)
+
+
 
 ### FindPw page
 ![image](https://user-images.githubusercontent.com/70055619/155465300-e1993041-2a9e-4957-9d3e-ca44a5ba4cfb.png)
 ![image](https://user-images.githubusercontent.com/70055619/155465547-05fd9bc5-21e6-44f1-83b3-68427514ab64.png)
 
+
+
 ### FindId page
 ![image](https://user-images.githubusercontent.com/70055619/155465622-8408b896-54f8-4e8b-aa87-560c95693381.png)
+
+
 
 ### Upload page
 ![image](https://user-images.githubusercontent.com/70055619/155465938-06c36691-59cc-4846-b5de-6d8f7cef4e93.png)
 
 
 
-### Deployment
+## API 설계
+
+| 기능          | URL             | Method    |Request      |Response|
+| ----------- | --------------- | --------- | ----------- | ------ |
+| 버킷리스트 전체 조회     | /api/list          | GET      | {}      | {'lists': [{'title': "스카이 다이빙", "category": "스포츠", "description":"스카이 다이빙 해야지!", "image": "", "like": 12}, ....]} |
+| 버킷리스트 업로드       | /api/enrollment | POST | {title_give: title, description_give: description, image_give: image, category_give: category} | {'msg': '등록되었습니다!'} |
+| 좋아요  | /api/heart | POST| {image_give: image}       | {'result': True} |{}  |
+| 회원가입      | /api/member  | POST | {id_give: id, pw_give: pw, nickname_give: nickname}  |  {'msg': '등록되었습니다!'} |
