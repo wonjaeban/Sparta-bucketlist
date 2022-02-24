@@ -55,7 +55,7 @@
 | 회원가입 중복 체크     | /api/sign_up_check  | POST | {id_give: id}  |  {'result': False} or {'result': True} |
 | 업로드 중복 체크     | /api/upload_check  | POST | {image_give: image}  |  {'result': False} or {'result': True} |
 | 비밀번호찾기     | /api/find_password_check  | POST | {id_give: id}  |  {'result': False} or {'result': True} |
-| 메인페이지 카테고리별 분류     | /api/category  | POST | {category_give:category}  |  'lists': [{'title': "스카이 다이빙", "category": "스포츠", "description":"스카이 다이빙 해야지!", "image": "", "like": 12}, ....]} |
+| 메인페이지 카테고리별 분류     | /api/category  | POST | {category_give:category}  |  {'lists': [{'title': "스카이 다이빙", "category": "스포츠", "description":"스카이 다이빙 해야지!", "image": "", "like": 12}, ....]} |
 | 메인페이지 좋아요순 정렬     | /api/like  | GET | {}  |  {'lists': [{'title': "스카이 다이빙", "category": "스포츠", "description":"스카이 다이빙 해야지!", "image": "", "like": 12}, ....]} |
 | 비밀번호 변경     | /api/modify_password  | POST | {id_give: id_input, pw_give: pw_input}  |  {'msg': '변경완료!'} |
 | 아이디 찾기시 이름 존재 여부 체크     | /api/name_check  | POST | {name_give: name}  |  {'result': False} or {'result': True} |
