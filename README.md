@@ -63,7 +63,18 @@
 
 
 
+## Built With
+Python
+* [Flask](https://flask.palletsprojects.com/en/2.0.x/) - Server 구축
+* [pymongo](https://pymongo.readthedocs.io/en/stable/) - MongoDB 제어
 
+
+JavaScript
+* [jQuery](https://jquery.com) - Cookie 생성과 AJAX 통신
+
+CSS
+* [Bootstrap](https://getbootstrap.com)
+* [Google Fonts](https://fonts.google.com)
 
 
 
