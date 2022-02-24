@@ -70,7 +70,7 @@ Python
 
 
 JavaScript
-* [jQuery](https://jquery.com) - Cookie 생성과 AJAX 통신
+* [jQuery](https://jquery.com) - AJAX 통신
 
 CSS
 * [Bootstrap](https://getbootstrap.com)
