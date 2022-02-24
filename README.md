@@ -51,3 +51,19 @@
 | 버킷리스트 업로드       | /api/enrollment | POST | {title_give: title, description_give: description, image_give: image, category_give: category} | {'msg': '등록되었습니다!'} |
 | 좋아요  | /api/heart | POST| {image_give: image}       | {'result': True} |{}  |
 | 회원가입      | /api/member  | POST | {id_give: id, pw_give: pw, nickname_give: nickname}  |  {'msg': '등록되었습니다!'} |
+| 로그인체크      | /api/check  | POST | {id_give: id_check, pw_give: pw_check}  |  {'result': True} or {'msg': '아이디 및 비밀번호가 틀렸습니다!', 'result': False} |
+| 회원가입 중복 체크     | /api/sign_up_check  | POST | {id_give: id}  |  {'result': False} or {'result': True} |
+| 업로드 중복 체크     | /api/upload_check  | POST | {image_give: image}  |  {'result': False} or {'result': True} |
+| 비밀번호찾기     | /api/find_password_check  | POST | {id_give: id}  |  {'result': False} or {'result': True} |
+| 메인페이지 카테고리별 분류     | /api/category  | POST | {category_give:category}  |  {'result': False} or {'result': True} |
+| 메인페이지 좋아요순 정렬     | /api/like  | GET | {}  |  {'lists': [{'title': "스카이 다이빙", "category": "스포츠", "description":"스카이 다이빙 해야지!", "image": "", "like": 12}, ....]} |
+| 비밀번호 변경     | /api/modify_password  | POST | {id_give: id_input, pw_give: pw_input}  |  {'msg': '변경완료!'} |
+| 아이디 찾기시 이름 존재 여부 체크     | /api/name_check  | POST | {name_give: name}  |  {'result': False} or {'result': True} |
+| 아이디 찾기시 해당 이름 아이디 호출     | /api/check_id  | POST | {name_give: decode_name}  |  {'lists': [{'id1': "qweewq", "pw": "q%31d%", "name:"반원재"}, ....]} |
+
+
+
+
+
+
+
